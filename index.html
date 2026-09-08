@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="웹 개발자 희영(HeeYoung)의 반응형 포트폴리오 웹사이트입니다. 순수 HTML, CSS, JavaScript로 구현된 프로젝트와 기술 스택을 소개합니다.">
+  <title>HeeYoung | Web Developer Portfolio</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Main Script with defer -->
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <!-- Header & Navigation Section -->
+  <header id="header" class="site-header">
+    <div class="header-container container">
+      <a href="#hero" class="brand-logo" id="brand-logo-link">
+        <span class="logo-code">&lt;</span>HeeYoung<span class="logo-code">/&gt;</span>
+      </a>
+
+      <nav class="main-nav" aria-label="메인 네비게이션">
+        <ul class="nav-list" id="nav-list">
+          <li class="nav-item"><a href="#hero" class="nav-link active">Home</a></li>
+          <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="#skills" class="nav-link">Skills</a></li>
+          <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="다크 모드 토글">
+          <i class="fa-solid fa-moon icon-moon"></i>
+          <i class="fa-solid fa-sun icon-sun"></i>
+        </button>
+        <!-- Mobile Hamburger Button -->
+        <button id="hamburger-btn" class="hamburger-btn" aria-label="모바일 메뉴 열기/닫기" aria-expanded="false" aria-controls="nav-list">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="hero-container container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="pulse-dot"></span> Web Front-end Developer
+          </div>
+          <h1 class="hero-title">
+            안녕하세요, <br>
+            <span class="highlight-text">강희영(KangHeeYoung)</span><br>입니다.
+          </h1>
+          <div class="typing-container">
+            <span id="typing-text" class="typing-text"></span>
+            <span class="cursor">&nbsp;</span>
+          </div>
+          <p class="hero-description">
+            사용자 경험을 최우선으로 생각하며, 사용자 이벤트와 데이터 흐름이 만드는 생생한 인터랙션을 순수 웹 기술로 설계하고 구현합니다.
+          </p>
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary">
+              <span>프로젝트 보기</span>
+              <i class="fa-solid fa-arrow-down"></i>
+            </a>
+            <a href="#contact" class="btn btn-secondary">
+              <span>문의하기</span>
+              <i class="fa-regular fa-envelope"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <a href="#about" aria-label="다음 섹션으로 이동">
+          <div class="mouse">
+            <div class="wheel"></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section reveal-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">About Me</h2>
+          <p class="section-subtitle">기본에 충실하며 가치를 만들어가는 개발자</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-image-wrapper">
+            <div class="about-image-card">
+              <img src="images/profile.jpg" alt="HeeYoung 개발자 프로필 사진" class="profile-img">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="experience-badge">
+              <span class="badge-number">Basic 1-1</span>
+              <span class="badge-label">Codyssey Specialist</span>
+            </div>
+          </div>
+
+          <div class="about-info">
+            <h3 class="about-heading">
+              "웹의 원리를 깊이 이해하고, 클린 코드를 지향합니다."
+            </h3>
+            <p class="about-text">
+              HTML5 시맨틱 마크업부터 CSS3 반응형 레이아웃, Vanilla JS 비동기 연동까지 프론트엔드의 기초를 튼튼히 다졌습니다. 
+              프레임워크의 추상화 뒤에 숨겨진 DOM 조작과 이벤트 다루기를 직관적이고 체계적으로 다룰 수 있습니다.
+            </p>
+            
+            <div class="personal-details">
+              <div class="detail-item">
+                <span class="detail-label"><i class="fa-solid fa-user"></i> 이름</span>
+                <span class="detail-value">강희영 (KangHeeYoung)</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="fa-solid fa-location-dot"></i> 위치</span>
+                <span class="detail-value">Seoul, South Korea</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="fa-solid fa-envelope"></i> 이메일</span>
+                <span class="detail-value">kheeyoung35@gmail.com</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="fa-brands fa-github"></i> GitHub</span>
+                <span class="detail-value"><a href="https://github.com/heeyoung35" target="_blank" rel="noopener noreferrer">github.com/heeyoung35</a></span>
+              </div>
+            </div>
+
+            <div class="interests-tags">
+              <span class="tag">#SemanticHTML</span>
+              <span class="tag">#VanillaJS</span>
+              <span class="tag">#CleanCode</span>
+              <span class="tag">#ResponsiveDesign</span>
+              <span class="tag">#WebAccessibility</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section reveal-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Tech Skills</h2>
+          <p class="section-subtitle">원리를 이해하고 활용할 수 있는 기술 스택</p>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Skill Card 1 -->
+          <article class="skill-card">
+            <div class="skill-icon-box html-icon">
+              <i class="fa-brands fa-html5"></i>
+            </div>
+            <h3 class="skill-title">HTML5</h3>
+            <p class="skill-desc">웹 접근성과 SEO를 고려한 시맨틱 태그 구조 설계 및 올바른 W3C 표준 작성</p>
+          </article>
+
+          <!-- Skill Card 2 -->
+          <article class="skill-card">
+            <div class="skill-icon-box css-icon">
+              <i class="fa-brands fa-css3-alt"></i>
+            </div>
+            <h3 class="skill-title">CSS3 / Modern CSS</h3>
+            <p class="skill-desc">Flexbox 및 CSS Grid 기반 모바일 퍼스트 반응형 레이아웃, CSS 변수 및 테마 관리</p>
+          </article>
+
+          <!-- Skill Card 3 -->
+          <article class="skill-card">
+            <div class="skill-icon-box js-icon">
+              <i class="fa-brands fa-square-js"></i>
+            </div>
+            <h3 class="skill-title">JavaScript (ES6+)</h3>
+            <p class="skill-desc">DOM 조작, 비동기 연동(fetch/async/await), 이벤트 리스너 및 로컬스토리지 상태 관리</p>
+          </article>
+
+          <!-- Skill Card 4 -->
+          <article class="skill-card">
+            <div class="skill-icon-box git-icon">
+              <i class="fa-brands fa-git-alt"></i>
+            </div>
+            <h3 class="skill-title">Git & GitHub</h3>
+            <p class="skill-desc">버전 관리, 브랜치 관리, GitHub REST API 연동 및 GitHub Pages 라이브 배포</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section (GitHub API Dynamic Fetching) -->
+    <section id="projects" class="projects-section reveal-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">GitHub Projects</h2>
+          <p class="section-subtitle">GitHub REST API를 통해 실시간으로 동적 렌더링되는 레포지토리 목록</p>
+        </div>
+
+        <!-- Filter Buttons (Bonus Requirement) -->
+        <div class="projects-filter" id="projects-filter">
+          <button class="filter-btn active" data-filter="all">All Repos</button>
+          <button class="filter-btn" data-filter="javascript">JavaScript</button>
+          <button class="filter-btn" data-filter="html">HTML/CSS</button>
+          <button class="filter-btn" data-filter="other">Other</button>
+        </div>
+
+        <!-- Projects UI Status Containers -->
+        <div class="projects-status-wrapper">
+          <!-- 1. Loading State UI -->
+          <div id="projects-loading" class="status-container loading-state">
+            <div class="spinner"></div>
+            <p class="status-text">GitHub 저장소 데이터를 불러오는 중입니다...</p>
+          </div>
+
+          <!-- 2. Error State UI (Rate limit, offline, fetch fail) -->
+          <div id="projects-error" class="status-container error-state hidden">
+            <div class="status-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 class="error-title">프로젝트를 불러올 수 없습니다</h3>
+            <p id="error-message-text" class="status-text">네트워크 연결 상태를 확인하시거나 잠시 후 다시 시도해주세요.</p>
+            <button id="retry-btn" class="btn btn-secondary retry-btn">
+              <i class="fa-solid fa-rotate-right"></i> 다시 시도
+            </button>
+          </div>
+
+          <!-- 3. Empty State UI -->
+          <div id="projects-empty" class="status-container empty-state hidden">
+            <div class="status-icon"><i class="fa-regular fa-folder-open"></i></div>
+            <h3 class="empty-title">표시할 프로젝트가 없습니다</h3>
+            <p class="status-text">해당 카테고리에 조건과 일치하는 레포지토리가 존재하지 않습니다.</p>
+          </div>
+
+          <!-- 4. Success State Cards Grid -->
+          <div id="projects-grid" class="projects-grid hidden">
+            <!-- Dynamic Repository Cards Rendered Here via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section reveal-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Contact Me</h2>
+          <p class="section-subtitle">새로운 프로젝트 문의나 함께할 기회에 대해 언제든 연락주세요</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info-card">
+            <h3>Contact Info</h3>
+            <p>궁금한 점이 있으시거나 협업 제안이 있다면 언제든지 메시지를 남겨주세요. 신속하게 답변드리겠습니다.</p>
+
+            <div class="info-list">
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                <div>
+                  <h4>Email</h4>
+                  <p>heeyoung35@example.com</p>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-brands fa-github"></i></div>
+                <div>
+                  <h4>GitHub Repository</h4>
+                  <p><a href="https://github.com/heeyoung35/Basic_1-1_portfolio-webpage.git" target="_blank" rel="noopener noreferrer">Basic_1-1_portfolio-webpage.git</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Form with label-for matching & Javascript Validation -->
+          <form id="contact-form" class="contact-form" novalidate>
+            <!-- Toast Feedback Message -->
+            <div id="form-alert" class="form-alert hidden" role="alert"></div>
+
+            <div class="form-group">
+              <label for="contact-name">이름 (Name) <span class="required">*</span></label>
+              <input type="text" id="contact-name" name="name" class="form-input" placeholder="홍길동" required>
+              <span id="name-error" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email">이메일 (Email) <span class="required">*</span></label>
+              <input type="email" id="contact-email" name="email" class="form-input" placeholder="example@email.com" required>
+              <span id="email-error" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message">메시지 (Message) <span class="required">*</span></label>
+              <textarea id="contact-message" name="message" class="form-textarea" rows="5" placeholder="프로젝트 문의 및 내용을 적어주세요." required></textarea>
+              <span id="message-error" class="error-message"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary submit-btn">
+              <span>메시지 보내기</span>
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <p class="copyright">&copy; 2026 <strong>HeeYoung</strong>. All Rights Reserved.</p>
+        <p class="footer-note">Built with pure HTML5, Vanilla CSS3 &amp; ES6+ JavaScript.</p>
+      </div>
+
+      <div class="footer-socials">
+        <a href="https://github.com/heeyoung35" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub 프로필">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://github.com/heeyoung35/Basic_1-1_portfolio-webpage.git" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Repository">
+          <i class="fa-solid fa-code-branch"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <button id="scroll-top" class="scroll-top-btn" aria-label="페이지 맨 위로 이동">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+</body>
+</html>
