@@ -52,7 +52,7 @@ function initTheme() {
   if (savedTheme) {
     state.theme = savedTheme;
   } else if (prefersDark) {
-    state.theme = dark;
+    state.theme = 'dark';
   } else {
     state.theme = 'light';
   }
@@ -417,7 +417,7 @@ function escapeHTML(str) {
 }
 
 /* ==========================================================================
-   7. Contact Form UX & Validation
+   7. Contact Form UX & Validation (Formspree Async Support)
    Event: submit, input
    Validation: Required check, Email regex format
    ========================================================================== */
@@ -429,6 +429,7 @@ function initContactForm() {
   const emailInput = document.querySelector('#contact-email');
   const messageInput = document.querySelector('#contact-message');
   const alertContainer = document.querySelector('#form-alert');
+  const submitBtn = form.querySelector('.submit-btn');
   
   // Real-time input validation clear
   [nameInput, emailInput, messageInput].forEach((input) => {
@@ -439,21 +440,52 @@ function initContactForm() {
     }
   });
   
-  form.addEventListener('submit', (e) => {
-    e.preventDefault(); // Prevent default browser submit
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevent default browser submit/redirect
     
     const isNameValid = validateField(nameInput, '이름을 입력해주세요.');
     const isEmailValid = validateEmail(emailInput);
     const isMessageValid = validateField(messageInput, '메시지 내용을 입력해주세요.');
     
     if (isNameValid && isEmailValid && isMessageValid) {
-      // Show Success Toast
-      showAlert(alertContainer, 'success', '메시지가 성공적으로 전송되었습니다! 확인 후 곧 연락드리겠습니다.');
-      form.reset();
+      const actionUrl = form.getAttribute('action');
+      
+      // If Formspree action URL is set, send async POST request
+      if (actionUrl && actionUrl.includes('formspree.io')) {
+        try {
+          if (submitBtn) submitBtn.disabled = true;
+          showAlert(alertContainer, 'info', '메시지를 전송하는 중입니다...');
+          
+          const formData = new FormData(form);
+          const response = await fetch(actionUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+          
+          if (response.ok) {
+            showAlert(alertContainer, 'success', '메시지가 성공적으로 전송되었습니다! 이메일함을 확인해주세요.');
+            form.reset();
+          } else {
+            const data = await response.json();
+            throw new Error(data.error || '이메일 전송 중 오류가 발생했습니다.');
+          }
+        } catch (err) {
+          showAlert(alertContainer, 'error', err.message);
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      } else {
+        // Default local UI feedback
+        showAlert(alertContainer, 'success', '메시지가 성공적으로 전송되었습니다! 확인 후 곧 연락드리겠습니다.');
+        form.reset();
+      }
       
       setTimeout(() => {
-        alertContainer.classList.add('hidden');
-      }, 5000);
+        if (alertContainer) alertContainer.classList.add('hidden');
+      }, 6000);
     } else {
       showAlert(alertContainer, 'error', '입력 항목에 오류가 있습니다. 필드를 확인해주세요.');
     }
