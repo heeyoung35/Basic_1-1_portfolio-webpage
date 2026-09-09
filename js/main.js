@@ -47,7 +47,7 @@ function initTheme() {
   
   // 1) Load theme from localStorage or system preference
   const savedTheme = localStorage.getItem(CONFIG.LOCAL_STORAGE_THEME_KEY);
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const { matches: prefersDark } = window.matchMedia('(prefers-color-scheme: dark)'); // ES6+ Destructuring
   
   if (savedTheme) {
     state.theme = savedTheme;
@@ -68,10 +68,10 @@ function initTheme() {
     });
   }
   
-  // 3) Listen for system theme changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  // 3) Listen for system theme changes using Destructuring Assignment
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ({ matches }) => {
     if (!localStorage.getItem(CONFIG.LOCAL_STORAGE_THEME_KEY)) {
-      state.theme = e.matches ? 'dark' : 'light';
+      state.theme = matches ? 'dark' : 'light';
       applyTheme(state.theme);
     }
   });
@@ -142,8 +142,7 @@ function updateActiveNavLinkOnScroll() {
   const scrollPosition = window.scrollY + 120;
   
   sections.forEach((section) => {
-    const sectionTop = section.offsetTop;
-    const sectionHeight = section.offsetHeight;
+    const { offsetTop: sectionTop, offsetHeight: sectionHeight } = section; // ES6+ Destructuring
     const sectionId = section.getAttribute('id');
     const correspondingLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
     
@@ -237,11 +236,13 @@ function initScrollObserver() {
     rootMargin: '0px 0px -50px 0px'
   };
   
+  // Using ES6+ Destructuring on IntersectionObserver Entry ({ isIntersecting, target })
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        obs.unobserve(entry.target);
+      const { isIntersecting, target } = entry; // ES6+ Destructuring Assignment
+      if (isIntersecting) {
+        target.classList.add('is-visible');
+        obs.unobserve(target);
       }
     });
   }, observerOptions);
@@ -298,20 +299,21 @@ async function fetchGitHubProjects() {
   
   try {
     const response = await fetch(`https://api.github.com/users/${CONFIG.GITHUB_USERNAME}/repos?sort=updated&per_page=12`);
+    const { status, ok } = response; // ES6+ Destructuring
     
     // Rate limit check (403 Response) or Not Found
-    if (response.status === 403) {
+    if (status === 403) {
       throw new Error('GitHub API 호출 한도(Rate Limit: 60회/시간)를 초과했습니다. 잠시 후 다시 시도해 주세요.');
-    } else if (response.status === 404) {
+    } else if (status === 404) {
       throw new Error('지정된 GitHub 사용자를 찾을 수 없습니다.');
-    } else if (!response.ok) {
-      throw new Error(`서버 응답 오류가 발생했습니다. (상태 코드: ${response.status})`);
+    } else if (!ok) {
+      throw new Error(`서버 응답 오류가 발생했습니다. (상태 코드: ${status})`);
     }
     
     const data = await response.json();
     
-    // Sort by stargazer count / updated
-    state.projects = data.filter((repo) => !repo.fork); // exclude forks for clean display
+    // Filter non-fork repositories using Destructuring inside Arrow Function ({ fork })
+    state.projects = data.filter(({ fork }) => !fork); 
     state.isLoadingProjects = false;
     
     loadingContainer.classList.add('hidden');
@@ -338,15 +340,17 @@ function renderProjectsByFilter() {
   // Hide error container if open
   errorContainer.classList.add('hidden');
   
-  // Filter logic using Array.prototype.filter
-  if (state.currentFilter === 'all') {
-    state.filteredProjects = [...state.projects];
-  } else if (state.currentFilter === 'javascript') {
-    state.filteredProjects = state.projects.filter((p) => p.language && p.language.toLowerCase() === 'javascript');
-  } else if (state.currentFilter === 'html') {
-    state.filteredProjects = state.projects.filter((p) => p.language && (p.language.toLowerCase() === 'html' || p.language.toLowerCase() === 'css'));
+  // Filter logic using Array.prototype.filter with Object Destructuring ({ language })
+  const { currentFilter, projects } = state; // ES6+ Destructuring
+  
+  if (currentFilter === 'all') {
+    state.filteredProjects = [...projects];
+  } else if (currentFilter === 'javascript') {
+    state.filteredProjects = projects.filter(({ language }) => language && language.toLowerCase() === 'javascript');
+  } else if (currentFilter === 'html') {
+    state.filteredProjects = projects.filter(({ language }) => language && (language.toLowerCase() === 'html' || language.toLowerCase() === 'css'));
   } else {
-    state.filteredProjects = state.projects.filter((p) => !p.language || (p.language.toLowerCase() !== 'javascript' && p.language.toLowerCase() !== 'html' && p.language.toLowerCase() !== 'css'));
+    state.filteredProjects = projects.filter(({ language }) => !language || (language.toLowerCase() !== 'javascript' && language.toLowerCase() !== 'html' && language.toLowerCase() !== 'css'));
   }
   
   // Check Empty State
@@ -359,14 +363,21 @@ function renderProjectsByFilter() {
   emptyContainer.classList.add('hidden');
   gridContainer.classList.remove('hidden');
   
-  // Map Array items to HTML Cards
+  // Map Array items using ES6+ Object Destructuring Assignment on GitHub Repo Objects
   const cardsHTML = state.filteredProjects.map((repo) => {
-    const name = escapeHTML(repo.name);
-    const description = repo.description ? escapeHTML(repo.description) : '프로젝트 설명이 등록되지 않았습니다.';
-    const language = repo.language ? escapeHTML(repo.language) : 'Code';
-    const stars = repo.stargazers_count || 0;
-    const repoUrl = repo.html_url;
-    const homepageUrl = repo.homepage;
+    // ES6+ Destructuring Assignment from repo object with aliases and defaults
+    const { 
+      name, 
+      description, 
+      language = 'Code', 
+      stargazers_count: stars = 0, 
+      html_url: repoUrl, 
+      homepage: homepageUrl 
+    } = repo;
+
+    const safeName = escapeHTML(name);
+    const safeDesc = description ? escapeHTML(description) : '프로젝트 설명이 등록되지 않았습니다.';
+    const safeLang = escapeHTML(language);
     
     return `
       <article class="project-card">
@@ -378,14 +389,14 @@ function renderProjectsByFilter() {
               <a href="${repoUrl}" target="_blank" rel="noopener noreferrer" class="repo-link" aria-label="GitHub 레포지토리 이동" title="GitHub"><i class="fa-brands fa-github"></i></a>
             </div>
           </div>
-          <h3 class="repo-name">${name}</h3>
-          <p class="repo-desc">${description}</p>
+          <h3 class="repo-name">${safeName}</h3>
+          <p class="repo-desc">${safeDesc}</p>
         </div>
         
         <div class="card-bottom">
           <span class="repo-lang">
-            <span class="lang-color-dot" style="background-color: ${getLanguageColor(language)};"></span>
-            ${language}
+            <span class="lang-color-dot" style="background-color: ${getLanguageColor(safeLang)};"></span>
+            ${safeLang}
           </span>
           <span class="repo-stars">
             <i class="fa-regular fa-star"></i> ${stars}
@@ -465,12 +476,15 @@ function initContactForm() {
             }
           });
           
-          if (response.ok) {
+          const { ok, status } = response; // ES6+ Destructuring
+          
+          if (ok) {
             showAlert(alertContainer, 'success', '메시지가 성공적으로 전송되었습니다! 이메일함을 확인해주세요.');
             form.reset();
           } else {
             const data = await response.json();
-            throw new Error(data.error || '이메일 전송 중 오류가 발생했습니다.');
+            const { error } = data; // ES6+ Destructuring
+            throw new Error(error || `이메일 전송 중 오류가 발생했습니다. (코드: ${status})`);
           }
         } catch (err) {
           showAlert(alertContainer, 'error', err.message);
@@ -494,10 +508,11 @@ function initContactForm() {
 
 function validateField(inputElement, errorMessage) {
   if (!inputElement) return false;
-  const value = inputElement.value.trim();
-  const errorSpan = document.querySelector(`#${inputElement.name}-error`);
+  const { value, name } = inputElement; // ES6+ Destructuring Assignment
+  const trimmedValue = value.trim();
+  const errorSpan = document.querySelector(`#${name}-error`);
   
-  if (!value) {
+  if (!trimmedValue) {
     showFieldError(inputElement, errorSpan, errorMessage);
     return false;
   }
@@ -508,14 +523,15 @@ function validateField(inputElement, errorMessage) {
 
 function validateEmail(emailElement) {
   if (!emailElement) return false;
-  const value = emailElement.value.trim();
+  const { value } = emailElement; // ES6+ Destructuring Assignment
+  const trimmedValue = value.trim();
   const errorSpan = document.querySelector('#email-error');
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
-  if (!value) {
+  if (!trimmedValue) {
     showFieldError(emailElement, errorSpan, '이메일 주소를 입력해주세요.');
     return false;
-  } else if (!emailRegex.test(value)) {
+  } else if (!emailRegex.test(trimmedValue)) {
     showFieldError(emailElement, errorSpan, '올바른 이메일 형식이 아닙니다 (예: name@domain.com).');
     return false;
   }
@@ -533,7 +549,8 @@ function showFieldError(input, errorSpan, message) {
 
 function clearFieldError(input, errorSpan) {
   input.classList.remove('invalid');
-  const span = errorSpan || document.querySelector(`#${input.name}-error`);
+  const { name } = input; // ES6+ Destructuring Assignment
+  const span = errorSpan || document.querySelector(`#${name}-error`);
   if (span) {
     span.textContent = '';
   }
